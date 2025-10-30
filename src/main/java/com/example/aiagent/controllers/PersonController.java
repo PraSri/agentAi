@@ -51,7 +51,7 @@ public class PersonController {
     }
 
     // Advisors and Chat Memory
-
+    // its picking from in memory chat
     @GetMapping("/{id}")
     Person findById(@PathVariable String id) {
         PromptTemplate pt = new PromptTemplate("""
