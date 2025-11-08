@@ -17,7 +17,7 @@ public class UserInputController {
     }
 
     @GetMapping
-    String generation(@RequestParam String userInput) {
+    String generation(@RequestParam(defaultValue = "tell me a joke") String userInput) {
         System.out.println("Calling the chatClient prompt");
         return this.chatClient.prompt()
                 .user(userInput)
