@@ -1,0 +1,35 @@
+
+Capstone Project
+
+I want to build one small project leveraging Agentic AI tools. I have written down my thoughts, you help me to refine it and suggest me improvements. Think like a professional Software Developer who just started learning Agentic AI.
+
+Idea :
+
+Wealth Management App
+
+Tentative Name : FinTrack Assitant
+
+Problem Statement : A personal AI Assitant to track, manage and advise on your wealth.
+
+Summary : This assitant will track your expenses, saving & income. Advise you when/where/how you should invest and save. This will help you maintain your wealth and cut down all the unnecessay expending.
+
+Example: I got my salary 20,000/- today. I have pending bills on my credit cards of around 5,000/- but I chose to buy my favourite video game worth 18,000/-.
+	My FinTrac Assitant will first advise me, to think before buying the video game, then it will suggest me cheaper alternatives of that videa game, because it knows that after spending 18,000/- I will be left with just 2,000/- which are very less to pay my bills. Here, my Assistant will have to take some decision like Finanace guru, it will say don't buy video game, or take cheap loan which will be comparatively lower than the credit card penalty fee. If I decided not to buy that video game, it will start a saving planning and predict if you save 2,000/- per month and invest 1,000/- per month to some safe funds, you can buy video in 3 months.
+
+Description :
+
+1. Track your expenses
+2. Track your savings
+3. Track your income
+4. Track your investments
+5. Set reminders for your SIP plans adjustable according to your current month spendings
+6. It will try to make up for the guilty spending in form of advising where to do safe investment, so you can recover your guilt of spending on unnecessary thing.
+	Example: I did impulse or binge shopping of things which were not necessary to me. I end up spending money which I could have invested or saved for my annual trip.
+	Now, my FinTrac Assitant will try to figure out ways to rectify for that spending by suggesting me ways to save/invest so I can successfully manage my annual vacation. It is my prarents who advise us not to spend and if you spend, teach us like strict teacher, how to recover from it.
+7. It will idendify from the kind of spend, that is is necessary spend and flag according.
+	Types of flags :
+		ABSOLUTE NECESSARY
+		NECESSARY
+		GOOD TO HAVE
+		NOT NECESSARY
+
