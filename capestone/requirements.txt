@@ -33,3 +33,82 @@ Description :
 		GOOD TO HAVE
 		NOT NECESSARY
 
+Real App
+
+Take financial data from bank accounts, read sms, emails, other resources then ingest in remote db per user.
+
+Mvp
+
+Ingest test data to in-memory database like sqlite or use google vertex ai for remote db
+
+Maintain user session - use adk
+
+entities
+
+User
+-id
+-name
+-metadata
+-createdAt
+-updatedAt
+
+ledger
+-id
+-userid
+-income
+-expensesPerMonth
+-emergencyFund
+-loan
+-savings
+-investment
+
+
+
+User Input Layer (Chat/Mobile)
+       ↓
+Orchestrator Agent (Decision Maker) -> root agent
+       ↓
+┌─────────────────────────────────┐
+│   Specialized Agent Toolkit     │
+├─────────────────────────────────┤
+│  Expense Analyzer Agent        │
+│  Financial Advisor Agent       │
+│  Risk Assessment Agent         │
+│  Savings Planner Agent         │
+│  Investment Recommender Agent  │
+│  Emergency Fund Monitor Agent  │
+└─────────────────────────────────┘
+       ↓
+Data Storage & External APIs
+
+Sequential Agents
+
+Expense Analyzer Agent -> Calculation of assets & liabities
+
+Risk Assessment Agent -> Categoration of expending
+
+Emergency Fund Monitor Agent -> Only called when expense is very critical
+
+Loan Agent -> When simple loan is applicable
+
+Parallel Agents
+
+Savings Planner Agent -> Plan savings
+Investment Recommender Agent -> Suggest investment stocks
+Financial Advisor Agent -> Call MCP server with news articles related the given topics
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
