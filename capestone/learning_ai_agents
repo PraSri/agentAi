@@ -1,0 +1,314 @@
+I want to build one small project leveraging Agentic AI tools. I have written down my thoughts, you help me to refine it and suggest me improvements. Think like a professional Software Developer who just started learning Agentic AI.
+Idea : Wealth Management App
+Name : FinTrack Assistant
+Problem Statement : A personal AI Assistant to track, manage and advise on your wealth.
+Refined Problem Statement: "A proactive AI financial advisor that prevents impulsive spending by providing real-time alternatives and personalized recovery plans"
+Summary: 
+FinTrack Assistant is a proactive AI-powered financial advisor that goes beyond simple expense tracking. It actively monitors your income, expenses, and savings in real-time to provide intelligent, context-aware financial guidance. The assistant prevents impulsive purchases by analyzing their impact before you commit, suggests smart alternatives when you're about to overspend, and creates personalized recovery and savings plans when you do. By automatically categorizing your spending patterns and flagging unnecessary expenses, FinTrack helps you maintain financial discipline, meet your obligations, and achieve your financial goals without feeling restricted. Think of it as having a personal finance guru who intervenes at the right moment with actionable advice tailored to your unique financial situation.
+Use Cases:
+
+USE CASE 1: Impulsive Purchase Prevention
+- Actor: User planning a large non-essential purchase
+- Goal: Make an informed spending decision without jeopardizing financial obligations
+- Scenario: User receives salary and wants to buy an expensive item while having pending bills
+- Agent Actions:
+  * Analyzes current cash flow (income, pending bills, available balance)
+  * Calculates financial impact of the purchase
+  * Provides real-time warning if purchase will cause bill payment issues
+  * Suggests cheaper alternatives for the desired item
+  * Compares options: delay purchase, take low-interest loan vs credit card penalty, or find alternatives
+  * Creates a savings plan if user decides to delay (e.g., save X amount per month to afford item in Y months)
+
+USE CASE 2: Automatic Spending Categorization
+- Actor: User making various daily purchases
+- Goal: Understand spending patterns and identify wasteful expenses
+- Scenario: Throughout the month, user makes multiple purchases of different types
+- Agent Actions:
+  * Tracks and logs all expenses automatically
+  * Categorizes each spend as: Necessary, Good to have, Useless, or Impulsive
+  * Identifies spending patterns and trends
+  * Flags potentially wasteful spending for user review
+  * Provides weekly/monthly spending breakdown by category
+
+USE CASE 3: Guilt Recovery Investment Plan
+- Actor: User who made an impulsive or guilt-inducing purchase
+- Goal: Recover from unplanned spending through smart financial actions
+- Scenario: After making an unnecessary purchase, user wants to offset the financial impact
+- Agent Actions:
+  * Acknowledges the completed transaction
+  * Calculates the financial impact of the guilt spend
+  * Recommends safe investment options to recover the amount
+  * Creates a personalized recovery plan with specific savings targets
+  * Suggests income-generating opportunities or side investments
+  * Tracks progress towards recovery goal
+
+Example Scenario (USE CASE 1):
+I got my salary 20,000/- today. I have pending bills on my credit cards of around 5,000/- but I chose to buy my favourite video game worth 18,000/-. My FinTrack Assistant will first advise me to think before buying the video game, then it will suggest me cheaper alternatives of that video game, because it knows that after spending 18,000/- I will be left with just 2,000/- which are very less to pay my bills. Here, my Assistant will have to take decisions like a Finance guru - it will say don't buy the video game, or take a cheap loan which will be comparatively lower than the credit card penalty fee. If I decided not to buy that video game, it will start a savings plan and predict: if you save 2,000/- per month and invest 1,000/- per month in some safe funds, you can buy the video game in 3 months.
+
+================================================================================
+TECHNICAL SPECIFICATIONS
+================================================================================
+
+Project Context: Hackathon project (4 days development timeline)
+Target: Build a working MVP with core features using free-tier services
+
+TECH STACK:
+-----------
+- AI Framework: Google ADK (Agent Development Kit)
+- LLM: Google Gemini (Free tier - 60 requests/minute)
+- Backend Language: Python 3.x
+- Database: SQLite (local file-based database)
+- User Interface: Google ADK Web Chat Interface
+- Session Management: Provided by Google ADK
+- Data Input: Manual entry by user through chat interface
+
+ARCHITECTURE COMPONENTS:
+------------------------
+1. Google ADK Agent Core
+   - Handles conversation flow and context management
+   - Manages function calling to agent tools
+   - Provides built-in session persistence
+
+2. Agent Tools Layer (Python functions)
+   - Financial calculation functions
+   - Database query/update operations
+   - Decision-making logic
+
+3. SQLite Database
+   - User data storage
+   - Transaction history
+   - Bills and savings plans
+
+4. External APIs (Mock for MVP)
+   - Loan rate information
+   - Investment options (using hardcoded safe values)
+   - Can integrate Yahoo Finance API later if time permits
+
+DATABASE SCHEMA:
+----------------
+Table: users
+- user_id (PRIMARY KEY, TEXT)
+- name (TEXT)
+- email (TEXT)
+- current_balance (REAL)
+- created_at (TIMESTAMP)
+
+Table: transactions
+- transaction_id (INTEGER PRIMARY KEY AUTOINCREMENT)
+- user_id (TEXT, FOREIGN KEY)
+- amount (REAL)
+- category (TEXT) -- Options: necessary, good_to_have, useless, impulsive
+- transaction_type (TEXT) -- income, expense, bill_payment
+- description (TEXT)
+- date (TIMESTAMP)
+- created_at (TIMESTAMP)
+
+Table: bills
+- bill_id (INTEGER PRIMARY KEY AUTOINCREMENT)
+- user_id (TEXT, FOREIGN KEY)
+- bill_name (TEXT)
+- amount (REAL)
+- due_date (DATE)
+- status (TEXT) -- pending, paid, overdue
+- penalty_rate (REAL) -- credit card penalty percentage
+- created_at (TIMESTAMP)
+
+Table: savings_plans
+- plan_id (INTEGER PRIMARY KEY AUTOINCREMENT)
+- user_id (TEXT, FOREIGN KEY)
+- item_name (TEXT)
+- target_amount (REAL)
+- monthly_save_amount (REAL)
+- monthly_invest_amount (REAL)
+- target_months (INTEGER)
+- status (TEXT) -- active, completed, cancelled
+- created_at (TIMESTAMP)
+
+Table: monthly_reports
+- report_id (INTEGER PRIMARY KEY AUTOINCREMENT)
+- user_id (TEXT, FOREIGN KEY)
+- month (TEXT) -- format: YYYY-MM
+- starting_balance (REAL)
+- ending_balance (REAL)
+- total_income (REAL)
+- total_expenses (REAL)
+- total_savings (REAL)
+- profitability (REAL) -- calculated metric
+- interventions_count (INTEGER) -- how many times agent prevented bad spending
+- created_at (TIMESTAMP)
+
+AGENT TOOLS (Functions exposed to Gemini):
+-------------------------------------------
+1. get_user_balance(user_id: str) -> dict
+   - Returns: current balance, pending bills total, available cash
+   
+2. check_pending_bills(user_id: str) -> list
+   - Returns: list of unpaid bills with due dates and amounts
+   
+3. analyze_purchase_impact(user_id: str, purchase_amount: float) -> dict
+   - Calculates: remaining balance after purchase, bill payment feasibility
+   - Returns: recommendation (safe/warning/danger), reason, alternatives
+   
+4. add_transaction(user_id: str, amount: float, type: str, description: str) -> dict
+   - Records income or expense
+   - Auto-categorizes using LLM if category not provided
+   - Returns: confirmation and updated balance
+   
+5. categorize_expense(description: str, amount: float) -> str
+   - Uses Gemini to classify: necessary, good_to_have, useless, impulsive
+   - Returns: category with brief reasoning
+   
+6. create_savings_plan(user_id: str, item_name: str, item_cost: float, monthly_income: float) -> dict
+   - Calculates optimal savings strategy
+   - Returns: monthly save amount, target months, investment suggestion
+   
+7. get_loan_comparison(purchase_amount: float, credit_card_penalty_rate: float) -> dict
+   - Compares: personal loan vs credit card penalty
+   - Returns: cheaper option with calculations
+   
+8. calculate_monthly_profitability(user_id: str, month: str) -> dict
+   - Calculates: savings, avoided penalties, investment gains
+   - Returns: profitability score, breakdown, visual summary
+   
+9. get_spending_summary(user_id: str, period: str) -> dict
+   - Returns: breakdown by category, trends, flags
+   
+10. record_intervention(user_id: str, action: str, amount_saved: float) -> dict
+    - Tracks when agent prevented bad decisions
+    - Returns: confirmation
+
+SUCCESS METRICS CALCULATION:
+-----------------------------
+Monthly Profitability Formula:
+Profitability = (Ending_Balance + Savings + Investments) 
+                - (Starting_Balance - Total_Income_of_Month)
+
+Additional Success Indicators:
+- Number of interventions (prevented bad purchases)
+- Bills paid on time (avoiding penalties)
+- Money saved through alternative suggestions
+- Spending pattern improvement (% reduction in "useless" category)
+
+Display to User:
+- Profitability score with +/- indicator
+- Money saved vs money wasted
+- Best financial decision of the month
+- Areas for improvement
+- Comparison with previous months
+
+EXTERNAL DATA (Free Tier):
+---------------------------
+For MVP (Hardcoded):
+- Personal loan rates: 8-12% annual
+- Credit card penalty: 18-24% annual
+- Safe investment options: Fixed deposits (6-7%), Mutual funds (10-12% expected)
+
+Future Integration Options:
+- Yahoo Finance API (free tier available)
+- Alpha Vantage API (5 calls/min free)
+- Exchange Rate API (for currency if needed)
+
+DEVELOPMENT TIMELINE (4 Days):
+-------------------------------
+Day 1: Foundation (Setup & Core Structure)
+- Set up Google ADK project
+- Create SQLite database with schema
+- Implement 3 basic tools: get_user_balance, add_transaction, check_pending_bills
+- Test Gemini function calling integration
+- Create sample user data for testing
+
+Day 2: Core Logic (USE CASE 1 Implementation)
+- Implement analyze_purchase_impact tool
+- Build create_savings_plan function
+- Add get_loan_comparison logic
+- Create system prompt for FinTrack Assistant persona
+- Test impulsive purchase prevention flow end-to-end
+
+Day 3: Categorization & Reports
+- Implement categorize_expense with LLM
+- Build calculate_monthly_profitability function
+- Add record_intervention tracking
+- Implement get_spending_summary
+- Populate realistic demo scenarios with data
+
+Day 4: Polish & Demo Preparation
+- Error handling and edge cases
+- Test all use case flows
+- Create compelling demo narrative with 2-3 user stories
+- Document setup and usage
+- Prepare presentation talking points
+
+SCOPE MANAGEMENT:
+-----------------
+MUST HAVE (Core MVP):
+✓ USE CASE 1: Impulsive Purchase Prevention (Primary feature)
+✓ Manual transaction entry via chat
+✓ Basic bill tracking
+✓ Savings plan generation
+✓ Monthly profitability report
+✓ 6-8 essential agent tools
+✓ Conversational chat interface
+
+NICE TO HAVE (If time permits):
+○ USE CASE 2: Automatic categorization with detailed insights
+○ Text-based data visualization in chat
+○ Multi-month trend analysis
+○ Export report functionality
+
+OUT OF SCOPE (Post-hackathon):
+✗ USE CASE 3: Complex investment recommendations
+✗ Real-time external API integrations
+✗ Bank account integration
+✗ Mobile application
+✗ Advanced analytics dashboard
+✗ Multi-currency support
+
+TECHNICAL CONSTRAINTS & CONSIDERATIONS:
+----------------------------------------
+1. Gemini Free Tier Limits:
+   - 60 requests/minute (sufficient for demo)
+   - Monitor token usage in conversations
+   - Keep context focused, avoid sending full transaction history each time
+
+2. SQLite Best Practices:
+   - Use indexes on user_id and date fields for performance
+   - Keep queries simple for hackathon timeline
+   - Consider using sqlite3 module (no additional dependencies)
+
+3. ADK Chat Interface:
+   - No custom frontend development needed
+   - Professional appearance out of the box
+   - Natural for financial advisor conversation
+
+4. Session Management:
+   - Google ADK handles user sessions automatically
+   - Each conversation maintains context
+   - User data persists across sessions via SQLite
+
+5. Error Handling:
+   - Graceful fallbacks for failed function calls
+   - Clear error messages to users
+   - Retry logic for LLM calls if needed
+
+DEMO STRATEGY:
+--------------
+Prepare 2-3 compelling scenarios:
+1. Salary Day Temptation: User wants expensive item with bills pending
+2. Recovery Plan: User made impulsive purchase, needs help recovering
+3. Monthly Review: Show profitability report after a month of using assistant
+
+For each scenario:
+- Pre-populate relevant data in database
+- Practice conversation flow
+- Highlight agent's decision-making and calculations
+- Show before/after financial impact
+
+PROJECT SUCCESS CRITERIA:
+-------------------------
+Hackathon judges should see:
+✓ Functional agent responding intelligently to financial queries
+✓ Real-time decision-making with transparent calculations
+✓ Proactive financial advice (not just tracking)
+✓ Clear profitability metrics
+✓ Natural conversational interface
+✓ Practical use cases that solve real problems
